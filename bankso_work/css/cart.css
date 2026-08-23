@@ -1,0 +1,13 @@
+.cart-page{padding:135px clamp(18px,6vw,100px) 90px;min-height:80vh}.cart-head h1{font-family:Anton;font-size:clamp(60px,9vw,125px);line-height:.85;margin:18px 0}.cart-head h1 em{font-style:normal;color:#777}.cart-head>p:last-child{max-width:560px;color:#999;font-size:12px;line-height:1.7}.cart-layout{display:grid;grid-template-columns:1.5fr .7fr;gap:45px;margin-top:60px}.bag-item{display:grid;grid-template-columns:150px 1fr;gap:20px;padding:16px 0;border-top:1px solid #252525}.bag-item img{width:150px;height:190px;object-fit:cover}.bag-item small,.cart-card>p:first-child{font-size:9px;color:#777;letter-spacing:2px;font-weight:800}.bag-item h2{font-family:Anton;font-size:48px;margin:18px 0}.remove,.clear{background:none;border:0;color:#888;font-size:9px;font-weight:800;letter-spacing:1.5px;cursor:pointer}.remove:hover,.clear:hover{color:#fff}.cart-card{border:1px solid #282828;background:#101010;padding:28px;align-self:start;position:sticky;top:105px}.cart-card h2{font-family:Anton;font-size:46px;margin:10px 0}.cart-card p:not(:first-child){font-size:11px;line-height:1.7;color:#888;margin-bottom:25px}.cart-card .btn{width:100%}.clear{width:100%;margin-top:22px}.empty-bag{text-align:center;padding:80px 20px;border:1px solid #222}.empty-bag i{font-size:30px;color:#555}.empty-bag h2{font-family:Anton;font-size:40px;margin:20px 0}.empty-bag .btn{max-width:320px}@media(max-width:800px){.cart-page{padding:100px 15px 55px}.cart-layout{grid-template-columns:1fr;margin-top:35px}.cart-card{position:static}.bag-item{grid-template-columns:105px 1fr}.bag-item img{width:105px;height:135px}.bag-item h2{font-size:34px}}
+
+.bag-main{min-width:0}
+.bag-price{font-size:10px;color:#777;letter-spacing:.5px;margin:0 0 16px}
+.bag-price strong{color:#fff;font-size:13px}
+.bag-quantity{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.bag-quantity>span{font-size:8px;letter-spacing:1.5px;color:#777;font-weight:800}
+.bag-quantity-control{display:flex;align-items:center;border:1px solid #333;background:#080808}
+.bag-quantity-control button{width:34px;height:32px;background:none;border:0;color:#fff;font-size:18px;cursor:pointer}
+.bag-quantity-control strong{width:34px;text-align:center;font-size:11px}
+.collection-back{display:inline-flex;align-items:center;gap:9px;margin-top:26px;color:#fff;font-size:10px;font-weight:800;letter-spacing:1.3px;border:1px solid #333;padding:13px 15px}
+.collection-back:hover{background:#fff;color:#000}
+@media(max-width:800px){.bag-price{margin-bottom:12px}.bag-quantity{gap:10px}}

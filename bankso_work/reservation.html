@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BANKSO — Réservation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/shared.css">
+<script src="js/config.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#050505;color:#fff;font-family:Montserrat,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+.site-header{height:74px;background:#050505;border-bottom:1px solid #292929;display:flex;align-items:center;padding:0 4vw;position:sticky;top:0;z-index:50}
+.site-header .logo img{width:120px;display:block;filter:grayscale(1) brightness(0) invert(1)}
+.menu-toggle{margin-left:auto;background:none;border:0;color:#fff;font-size:23px;cursor:pointer;padding:8px}
+.site-header nav{position:absolute;right:4vw;top:74px;width:280px;background:#080808;border:1px solid #292929;display:none;flex-direction:column}
+.site-header nav.open{display:flex}
+.site-header nav a{padding:17px 22px;color:#999;font-weight:800;font-size:13px;letter-spacing:.12em}
+.site-header nav a:hover,.site-header nav a.active{color:#fff;background:#111}
+
+.page{max-width:1100px;margin:auto;padding:50px 22px 80px}
+.intro{margin-bottom:30px}
+.eyebrow{font-size:10px;letter-spacing:.16em;color:#888;text-transform:uppercase}
+h1{font-family:Anton,Arial,sans-serif;font-size:clamp(48px,8vw,82px);font-weight:400;line-height:.95;margin:10px 0}
+.intro p{color:#888;max-width:620px;font-size:13px;line-height:1.7;margin:0}
+.layout{display:grid;grid-template-columns:1.25fr .75fr;gap:20px;align-items:start}
+.card{background:#101010;border:1px solid #292929;border-radius:18px;padding:24px}
+.card h2{font-size:15px;letter-spacing:.08em;margin:0 0 18px}
+.items{display:grid;gap:10px}
+.item{display:grid;grid-template-columns:92px 1fr auto;gap:15px;align-items:center;background:#090909;border:1px solid #292929;border-radius:14px;padding:10px}
+.item img{width:92px;height:105px;object-fit:contain;background:#151515;border-radius:9px}
+.item-name{font-size:15px;font-weight:800;letter-spacing:.03em}
+.item-meta{font-size:10px;color:#777;margin-top:6px;text-transform:uppercase;letter-spacing:.08em}
+.item-price{font-size:13px;font-weight:800;white-space:nowrap}
+.remove{margin-top:9px;background:none;border:0;padding:0;color:#777;font-size:9px;cursor:pointer;text-transform:uppercase}
+.remove:hover{color:#fff}
+.empty{padding:45px 10px;text-align:center;color:#777;font-size:12px}
+.empty a{display:inline-block;margin-top:18px;border:1px solid #555;padding:12px 16px;color:#fff;border-radius:10px;font-size:10px;font-weight:800}
+.summary{position:sticky;top:95px}
+.summary-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #292929;font-size:11px}
+.summary-row span{color:#777}.summary-row strong{font-size:12px}
+.total{display:flex;justify-content:space-between;padding:18px 0 6px;font-size:16px;font-weight:800}
+.total strong{font-size:20px}
+.notice{font-size:9px;color:#777;line-height:1.6;margin:15px 0 0}
+.form{margin-top:20px}
+.form h2{margin-bottom:5px}
+.form .sub{color:#777;font-size:10px;line-height:1.6;margin:0 0 16px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field.full{grid-column:1/-1}
+.field label{display:block;color:#aaa;font-size:10px;margin-bottom:6px}
+input,textarea{width:100%;background:#080808;border:1px solid #303030;border-radius:10px;color:#fff;padding:13px;outline:none}
+input:focus,textarea:focus{border-color:#fff}
+textarea{min-height:80px;resize:vertical}
+.consent{display:flex;gap:8px;color:#777;font-size:9px;line-height:1.5;margin:14px 0}
+.consent input{width:auto;margin-top:2px}
+.submit{width:100%;border:0;background:#fff;color:#000;border-radius:11px;padding:15px;font-weight:800;letter-spacing:.05em;cursor:pointer}
+.submit:disabled{opacity:.5;cursor:wait}
+.success,.error{display:none;margin-top:12px;padding:13px;border-radius:10px;font-size:10px;line-height:1.5}
+.success{background:#151515;border:1px solid #555;color:#fff}
+.confirmation{display:flex;gap:14px;align-items:flex-start;margin-top:16px;padding:18px;border-radius:14px}
+.confirmation-icon{width:34px;height:34px;border:1px solid #777;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 34px;font-weight:800}
+.confirmation strong{display:block;font-size:12px;letter-spacing:.1em;margin-bottom:5px}
+.confirmation p{margin:0 0 5px;color:#fff;font-size:12px;line-height:1.5}
+.confirmation small{display:block;color:#888;font-size:10px;line-height:1.6}
+
+.error{background:#180d0d;border:1px solid #663b3b;color:#ffb0b0}
+.back{display:inline-block;color:#888;font-size:10px;margin-top:15px;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:800px){
+ .site-header{height:66px;padding:0 18px}.site-header .logo img{width:105px}
+ .site-header nav{top:66px;left:0;right:0;width:100%;border-left:0;border-right:0}
+ .page{padding:38px 16px 60px}.layout{grid-template-columns:1fr}
+ .summary{position:static;order:-1}.fields{grid-template-columns:1fr}.field.full{grid-column:auto}
+}
+@media(max-width:480px){.item{grid-template-columns:72px 1fr}.item img{width:72px;height:90px}.item-price{grid-column:2}.card{padding:18px}}
+</style>
+</head>
+<body>
+<header class="site-header solid-header">
+  <a class="logo" href="index.html"><img src="images/logo.png" alt="BANKSO"></a>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-label="Menu" aria-expanded="false"><i class="fa-solid fa-bars">☰</i></button>
+  <nav id="mainNav">
+    <a href="index.html">DROP</a>
+    <a href="collection.html">COLLECTION</a>
+    <a href="reservation.html" class="active">RÉSERVER</a>
+    <a href="contact.html">CONTACT</a>
+  </nav>
+</header>
+
+<main class="page">
+  <section class="intro">
+    <div class="eyebrow">BANKSO · RÉSERVATION</div>
+    <h1>TA RÉSERVATION</h1>
+    <p>Les articles que tu as sélectionnés sont déjà là. Vérifie simplement ta sélection, indique tes coordonnées et envoie ta demande.</p>
+  </section>
+
+  <div id="emptyState" class="card empty" style="display:none">
+    <strong>TA SÉLECTION EST VIDE</strong>
+    <div>Ajoute un ou plusieurs articles avant de continuer.</div>
+    <a href="collection.html">VOIR LA COLLECTION</a>
+  </div>
+
+  <div class="layout" id="reservationLayout">
+    <section>
+      <div class="card">
+        <h2>ARTICLES SÉLECTIONNÉS</h2>
+        <div id="items" class="items"></div>
+        <a class="back" href="cart.html">← Modifier ma sélection</a>
+      </div>
+
+      <div class="card form">
+        <h2>TES COORDONNÉES</h2>
+        <p class="sub">Tu n'as pas besoin de choisir à nouveau les articles ou les tailles.</p>
+        <form id="reservationForm">
+          <div class="fields">
+            <div class="field">
+              <label for="name">NOM COMPLET *</label>
+              <input id="name" name="name" required autocomplete="name" placeholder="Ton nom et prénom">
+            </div>
+            <div class="field">
+              <label for="email">E-MAIL *</label>
+              <input id="email" name="email" type="email" required autocomplete="email" placeholder="ton@email.com">
+            </div>
+            <div class="field full">
+              <label for="phone">TÉLÉPHONE *</label>
+              <input id="phone" name="phone" required autocomplete="tel" placeholder="+32 ...">
+            </div>
+            <div class="field full">
+              <label for="message">MESSAGE (FACULTATIF)</label>
+              <textarea id="message" name="message" placeholder="Une question ou une précision ?"></textarea>
+            </div>
+          </div>
+          <label class="consent">
+            <input id="consent" type="checkbox" required>
+            <span>J'accepte d'être contacté concernant cette demande de réservation.</span>
+          </label>
+          <button class="submit" type="submit">ENVOYER MA RÉSERVATION</button>
+          <div id="success" class="success confirmation" role="status" aria-live="polite">
+  <div class="confirmation-icon">✓</div>
+  <div>
+    <strong>RÉSERVATION ENVOYÉE</strong>
+    <p>Merci ! Ta demande a bien été reçue.</p>
+    <small>Nous allons vérifier la disponibilité de tes articles et te contacter prochainement pour confirmer ta réservation.</small>
+  </div>
+</div>
+          <div id="error" class="error">L'envoi n'a pas fonctionné. Vérifie ta connexion et réessaie.</div>
+        </form>
+      </div>
+    </section>
+
+    <aside class="card summary">
+      <h2>RÉCAPITULATIF</h2>
+      <div class="summary-row"><span>ARTICLES</span><strong id="count">0</strong></div>
+      <div class="summary-row"><span>PRIX PAR T-SHIRT</span><strong>24,99 €</strong></div>
+      <div class="summary-row"><span>SOUS-TOTAL</span><strong id="subtotal">0,00 €</strong></div>
+      <div class="total"><span>TOTAL</span><strong id="total">0,00 €</strong></div>
+      <p class="notice">Aucun paiement n'est demandé ici. Ce total correspond au prix des articles sélectionnés. La disponibilité sera vérifiée avant confirmation.</p>
+    </aside>
+  </div>
+</main>
+
+<script>
+const PRICE = 24.99;
+const bagKey = 'banksoBag';
+
+function getBag(){
+  try{
+    const bag = JSON.parse(localStorage.getItem(bagKey) || '[]');
+    return Array.isArray(bag) ? bag : [];
+  }catch(e){ return []; }
+}
+function money(n){ return n.toFixed(2).replace('.',',') + ' €'; }
+
+const itemsEl=document.getElementById('items');
+const countEl=document.getElementById('count');
+const subtotalEl=document.getElementById('subtotal');
+const totalEl=document.getElementById('total');
+const emptyState=document.getElementById('emptyState');
+const layout=document.getElementById('reservationLayout');
+
+function groupItems(items){
+  const grouped=[];
+  const indexByKey=new Map();
+  items.forEach(x=>{
+    const key=String(x.name || x.product || "") + "||" + String(x.size || "");
+    if(indexByKey.has(key)){
+      grouped[indexByKey.get(key)].quantity += 1;
+    }else{
+      const copy={...x, quantity:1};
+      indexByKey.set(key, grouped.length);
+      grouped.push(copy);
+    }
+  });
+  return grouped;
+}
+
+function render(){
+  const bag=getBag();
+  if(!bag.length){
+    emptyState.style.display='block';
+    layout.style.display='none';
+    return;
+  }
+  emptyState.style.display='none';
+  layout.style.display='grid';
+
+  const grouped=groupItems(bag);
+  countEl.textContent=bag.length + (bag.length>1?' articles':' article');
+  subtotalEl.textContent=money(bag.length*PRICE);
+  totalEl.textContent=money(bag.length*PRICE);
+
+  itemsEl.innerHTML=grouped.map((x,i)=>`
+    <article class="item">
+      <img src="${x.image || 'images/logo.png'}" alt="${x.name || x.product || 'Article'}">
+      <div>
+        <div class="item-name">${x.name || x.product || 'Article'}</div>
+        <div class="item-meta">DROP 001 · Taille ${x.size || '-'} · Quantité ${x.quantity}</div>
+        <button class="remove" data-index="${i}" type="button">Retirer la sélection</button>
+      </div>
+      <div class="item-price">${money(PRICE*x.quantity)}</div>
+    </article>
+  `).join('');
+
+  itemsEl.querySelectorAll('.remove').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const groupedNow=groupItems(getBag());
+      const target=groupedNow[Number(btn.dataset.index)];
+      const b=getBag().filter(x =>
+        !(
+          String(x.name || x.product || "") === String(target.name || target.product || "") &&
+          String(x.size || "") === String(target.size || "")
+        )
+      );
+      localStorage.setItem(bagKey,JSON.stringify(b));
+      render();
+    });
+  });
+}
+render();
+
+const menuToggle=document.getElementById('menuToggle');
+const mainNav=document.getElementById('mainNav');
+menuToggle.addEventListener('click',()=>{
+  const open=mainNav.classList.toggle('open');
+  menuToggle.setAttribute('aria-expanded',open?'true':'false');
+});
+
+document.getElementById('reservationForm').addEventListener('submit',async(e)=>{
+  e.preventDefault();
+  const bag=getBag();
+  if(!bag.length){ alert('Ta sélection est vide.'); return; }
+  const btn=e.target.querySelector('.submit');
+  const success=document.getElementById('success');
+  const error=document.getElementById('error');
+  success.style.display='none'; error.style.display='none';
+  btn.disabled=true; btn.textContent='ENVOI EN COURS…';
+
+  const formData=Object.fromEntries(new FormData(e.target).entries());
+  const payload={
+    type:'reservation',
+    ...formData,
+    items:groupItems(bag).map(x=>({
+      product:x.product || x.name,
+      name:x.name,
+      size:x.size,
+      quantity:x.quantity,
+      price:PRICE,
+      lineTotal:PRICE*x.quantity
+    })),
+    itemCount:bag.length,
+    total:bag.length*PRICE,
+    totalFormatted:money(bag.length*PRICE),
+    timestamp:new Date().toISOString()
+  };
+
+  try{
+    const endpoint=window.BANKSO_CONFIG?.GOOGLE_SCRIPT_URL || '';
+    if(!endpoint) throw new Error('Google Apps Script URL manquante');
+    await fetch(endpoint,{
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(payload)
+    });
+    success.style.display='flex';
+    localStorage.removeItem(bagKey);
+    success.scrollIntoView({behavior:'smooth', block:'center'});
+    e.target.reset();
+    render();
+  }catch(err){
+    error.style.display='block';
+  }finally{
+    btn.disabled=false;
+    btn.textContent='ENVOYER MA RÉSERVATION';
+  }
+});
+</script>
+
+</body>
+</html>
